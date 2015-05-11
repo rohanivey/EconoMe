@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.Array;
 
 public class MainMenuScreen implements Screen {
 
-	SpriteBatch sb = new SpriteBatch();
-
+	SpriteBatch sb;
+	Jukebox jukebox;
 	Stage stage;
 	Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 	TextButton playButton = new TextButton("Play", skin);
@@ -23,9 +23,14 @@ public class MainMenuScreen implements Screen {
 	TextButton exitButton = new TextButton("Exit", skin);
 	Array<Button> buttonList = new Array<Button>();
 	GameStateManager gsm;
+	Boolean buttonsPlaced = false;
 
 	@Override
 	public void show() {
+
+		sb = gsm.getAM().getSB();
+		jukebox = gsm.getAM().getJukebox();
+
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 
@@ -39,17 +44,29 @@ public class MainMenuScreen implements Screen {
 		buttonList.add(optionsButton);
 		buttonList.add(exitButton);
 
-		int i = 0;
-
-		for (Button b : buttonList) {
-			b.setX(Gdx.graphics.getWidth() * 0.4f);
-			b.setY(Gdx.graphics.getHeight() * 0.6f - i * 32);
-			b.setBounds(b.getX(), b.getY(), b.getWidth(), b.getHeight());
-			b.setDebug(true);
-			i++;
-			System.out.println("X: " + b.getX() + " Y: " + b.getY()
-					+ " Width: " + b.getWidth() + " Height: " + b.getHeight());
+		if (!buttonsPlaced) {
+			placeButtons();
 		}
+
+		playButton.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int playButton) {
+				System.out.println("Button clicked");
+				gsm.setOptions();
+				return true;
+			}
+		});
+
+		loadButton.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int loadButton) {
+				System.out.println("Button clicked");
+				gsm.setLoad();
+				return true;
+			}
+		});
 
 		optionsButton.addListener(new InputListener() {
 			@Override
@@ -61,12 +78,12 @@ public class MainMenuScreen implements Screen {
 			}
 		});
 
-		optionsButton.addListener(new InputListener() {
+		exitButton.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int optionsButton) {
-				System.out.println("Honk");
-				// else play buzz or something
+					int pointer, int exitButton) {
+				System.out.println("Button clicked");
+				System.exit(0);
 				return true;
 			}
 		});
@@ -78,6 +95,21 @@ public class MainMenuScreen implements Screen {
 		sb.begin();
 		stage.draw();
 		sb.end();
+	}
+
+	public void placeButtons() {
+		int i = 0;
+
+		for (Button b : buttonList) {
+			b.setX(Gdx.graphics.getWidth() * 0.4f);
+			b.setY(Gdx.graphics.getHeight() * 0.6f - i * 32);
+			b.setBounds(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+			b.setDebug(true);
+			i++;
+			System.out.println("X: " + b.getX() + " Y: " + b.getY()
+					+ " Width: " + b.getWidth() + " Height: " + b.getHeight());
+		}
+		buttonsPlaced = true;
 	}
 
 	@Override

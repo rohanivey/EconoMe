@@ -3,6 +3,8 @@ package com.rohan.econome;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -23,17 +25,31 @@ public class OptionsScreen implements Screen {
 	@Override
 	public void show() {
 		stage = new Stage();
+		Gdx.input.setInputProcessor(stage);
+
 		stage.addActor(volumeLabel);
 		stage.addActor(volumeSlider);
 		stage.addActor(backButton);
 
 		backButton.setX(Gdx.graphics.getWidth() - 64);
-		backButton.setY(Gdx.graphics.getHeight() - 64);
+		backButton.setY(64);
 
-		volumeLabel.setPosition(Gdx.graphics.getWidth() * 40,
-				Gdx.graphics.getHeight() * 40);
-		volumeSlider.setPosition(volumeLabel.getX() + volumeLabel.getWidth(),
-				volumeLabel.getY() + volumeLabel.getHeight());
+		volumeLabel.setPosition(Gdx.graphics.getWidth() / 2 + 40,
+				Gdx.graphics.getHeight() / 2 + 40);
+		volumeSlider.setPosition(volumeLabel.getX() + volumeLabel.getWidth()
+				+ 8, volumeLabel.getY());
+
+		backButton.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int backButton) {
+				System.out.println(volumeSlider.getValue());
+				gsm.setMain();
+				return true;
+			}
+		});
+
+		stage.setDebugAll(true);
 
 	}
 
