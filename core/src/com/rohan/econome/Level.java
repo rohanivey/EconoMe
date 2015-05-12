@@ -2,12 +2,9 @@ package com.rohan.econome;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -15,10 +12,14 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Level {
+public class Level extends Actor {
 
-	protected SpriteBatch sb;
+	public static String getRegionName() {
+		return null;
+	}
+
 	protected TiledMap map;
 	protected TiledMapTileLayer bg;
 	protected TiledMapTileLayer fg;
@@ -30,50 +31,32 @@ public class Level {
 	protected ArrayList<Item> itemsOnScreen;
 	protected ArrayList<Entity> critters;
 	protected ArrayList<Zone> zoneArray;
-	protected ShapeRenderer sr;
 
-	protected OrthographicCamera cam;
+	protected Camera cam;
 
 	protected Player player;
-
-	protected BitmapFont chatFont;
 	protected GameStateManager gsm;
+
 	protected Music levelMusic;
 
 	protected ArrayList<TiledMap> level;
-
 	protected DialogueHandler dh;
 
-	public Level() {
-		level = new ArrayList<TiledMap>();
-		critters = new ArrayList<Entity>();
-		itemsOnScreen = new ArrayList<Item>();
-		zoneArray = new ArrayList<Zone>();
-		cam = new OrthographicCamera(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight());
+	protected SpriteBatch sb;
 
-		chatFont = new BitmapFont();
-		dh = new DialogueHandler();
-		sb = new SpriteBatch();
-		sr = new ShapeRenderer();
+	public Level(PlayScreen inputPlayScreen, String inputLevel) {
+		cam = inputPlayScreen.getCam();
+		sb = inputPlayScreen.getSb();
 
-		areaLoad("firstMap.tmx");
-	}
-
-	public Level(String inputLevel) {
 		level = new ArrayList<TiledMap>();
 		critters = new ArrayList<Entity>();
 		itemsOnScreen = new ArrayList<Item>();
 		zoneArray = new ArrayList<Zone>();
 		dh = new DialogueHandler();
-		cam = new OrthographicCamera(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight());
-
-		chatFont = new BitmapFont();
-		sb = new SpriteBatch();
-		sr = new ShapeRenderer();
 
 		areaLoad(inputLevel);
+
+		player = new Player(30, 30, this);
 
 	}
 
@@ -119,6 +102,39 @@ public class Level {
 	}
 
 	public void draw() {
+		drawMap();
+
+		ArrayList<DustCloud> tempCloudList = player.getDustList();
+
+		for (DustCloud d : tempCloudList) {
+			sb.begin();
+			sb.draw(d.getTexture(), d.getX(), d.getY(), 8, 8);
+			sb.end();
+		}
+	}
+
+	public void drawMap() {
+
+		System.out.println("Level.drawMap() is drawing");
+
+		// mapRenderer.setView(cam);
+		mapRenderer.renderTileLayer(bg);
+		mapRenderer.renderTileLayer(fg);
+		mapRenderer.renderTileLayer(oj);
+		mapRenderer.renderTileLayer(zones);
+
+		for (Item i : itemsOnScreen) {
+			sb.draw(i.getTexture(), i.getLocation().x, i.getLocation().y);
+		}
+
+		sb.draw(player.getFrame(), player.getX()
+				- player.getFrame().getRegionWidth() / 2, player.getY());
+
+		for (Entity e : critters) {
+			sb.draw(e.getTexture(), e.getX(), e.getY());
+		}
+
+		mapRenderer.renderTileLayer(oh);
 	}
 
 	public void entityUpdate() {
@@ -127,7 +143,7 @@ public class Level {
 		}
 	}
 
-	public OrthographicCamera getCamera() {
+	public Camera getCamera() {
 		return cam;
 	}
 
@@ -262,10 +278,6 @@ public class Level {
 		player.update();
 		entityUpdate();
 		cameraHandler();
-	}
-
-	public static String getRegionName() {
-		return null;
 	}
 
 }

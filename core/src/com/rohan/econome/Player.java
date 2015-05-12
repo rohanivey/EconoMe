@@ -16,15 +16,24 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.XmlWriter;
 
-public class Player {
+public class Player extends Actor {
 
 	enum AnimationState {
 		Left, Right, Up, Down
+	}
+
+	enum Direction {
+		Left, Right
+	}
+
+	enum floorState {
+		onGround, inAir, onLadder
 	}
 
 	enum State {
@@ -34,9 +43,9 @@ public class Player {
 	protected Vector2 location;
 	protected Vector2 previousLocation;
 	protected Vector2 tempLocation;
+
 	protected Texture img;
 	protected MapProperties mapProperties;
-
 	protected int mapWidth;
 	protected int mapHeight;
 	protected Animation walkLeft;
@@ -47,20 +56,21 @@ public class Player {
 	State currentState = State.Moving;
 	protected float stateTime;
 	TextureRegion[] animationFrames;
+
 	TextureRegion[] animationFrames2;
 	TextureRegion currentFrame;
-
 	// Horizontal
 	protected static final int FRAME_COLS = 9;
 	// Vertical
 	protected static final int FRAME_ROWS = 4;
+
 	protected Rectangle boundingRectangle;
+
 	protected Circle interactCircle;
 
 	protected Vector2 interactCircleLocation;
 
 	protected float interactTimer;
-
 	protected int speed;
 
 	protected Entity activeEntity;
@@ -70,27 +80,33 @@ public class Player {
 	private Boolean foundName;
 
 	private TradeHandler th;
+
 	private Boolean tradeSetup = false;
 
 	protected InventoryManager im;
 
 	protected int str, wis, intel, agility, vit;
-
 	protected int coins = 150;
-
-	protected PlayScreen level;
+	protected Level level;
 	protected XmlReader reader;
 	protected StringWriter sw;
+
 	protected XmlWriter writer;
 	protected FileHandle file;
 
 	protected ArrayList<Feat> featList = new ArrayList<Feat>();
 	protected String firstName, lastName;
+	private int jumpCount;
+	private float jumpCooldown = 0.1f;
+	private float vertVelocity = -0.8f;
+	private float horVelocity = 0f;
+	private float friction = 1f;
 
-	public Player() {
-	}
+	private floorState fs = floorState.inAir;
 
-	public Player(int inputX, int inputY, PlayScreen inputLevel) {
+	private ArrayList<DustCloud> dustList = new ArrayList<DustCloud>();
+
+	public Player(int inputX, int inputY, Level inputLevel) {
 
 		location = new Vector2(inputX, inputY);
 		previousLocation = location;
@@ -160,16 +176,54 @@ public class Player {
 
 	}
 
+	public Player() {
+		// DON'T TOUCH, FOR TEMP PLAYER PURPOSES
+	}
+
 	public void addFeat(Feat inputFeat) {
 		featList.add(inputFeat);
 	}
 
-	public void setFirstName(String inputString) {
-		firstName = inputString;
+	public void adjustGravity() {
+		if (vertVelocity >= -5.0f)
+			vertVelocity += -3f;
+		else {
+			vertVelocity = -12f;
+		}
 	}
 
-	public void setLastName(String inputString) {
-		lastName = inputString;
+	public void applyFriction() {
+		if (horVelocity > friction && horVelocity > 0) {
+			horVelocity -= friction;
+		} else if (horVelocity < 0) {
+			horVelocity += friction;
+		} else if (horVelocity <= friction) {
+			horVelocity = 0;
+		}
+	}
+
+	public void applyGravity() {
+		this.location.y += vertVelocity;
+	}
+
+	// public ArrayList<DustCloud> getDustList(){return null;}
+
+	public void applySpeed(Direction inputDirection) {
+		// I KNOW IT AIN'T PHYSICS KOSHER
+		switch (inputDirection) {
+		case Left:
+			if (horVelocity > speed * -4 && fs == floorState.onGround) {
+				horVelocity -= speed / 2;
+				dustList.add(new DustCloud("Right", location.x, location.y));
+			}
+			break;
+		case Right:
+			if (horVelocity < speed * 4 && fs == floorState.onGround) {
+				horVelocity += speed / 2;
+				dustList.add(new DustCloud("Left", location.x, location.y));
+			}
+			break;
+		}
 	}
 
 	public void checkChatting() {
@@ -233,99 +287,97 @@ public class Player {
 
 	}
 
-	public void readData() {
-		readStats();
-		im = new InventoryManager(this);
-		readItems();
-	}
+	public Boolean checkColliders() {
+		Rectangle tempCollision = new Rectangle();
+		Boolean canMove = true;
 
-	// public ArrayList<DustCloud> getDustList(){return null;}
-
-	public void readStats() {
-
-		Element root;
-		try {
-			root = reader.parse(Gdx.files.local("player.xml"));
-			// Build player stats
-			Element stats = root.getChildByName("Stats");
-
-			str = stats.getInt("Strength");
-			System.out.println("Str is : " + str);
-			wis = stats.getInt("Wisdom");
-			intel = stats.getInt("Intelligence");
-			agility = stats.getInt("Agility");
-			vit = stats.getInt("Vitality");
-		} catch (IOException e) {
-			System.out.println("Player.readStats() could find no file");
-			e.printStackTrace();
-		}
-
-	}
-
-	public void readItems() {
-		Element root;
-		try {
-			// TODO: FIX THIS TO BE LOCAL, NOT INTERNAL
-			root = reader.parse(Gdx.files.local("player.xml"));
-			Element inventory = root.getChildByName("Inventory");
-			coins = inventory.getInt("Coins");
-			Element items = inventory.getChildByName("Items");
-			Array<Element> inventoryList = items.getChildrenByName("Item");
-			for (Element e : inventoryList) {
-				System.out.println("Name : " + e.getName());
-				System.out.println("Text: " + e.getText());
-			}
-			for (Element e : inventoryList) {
-				Item i = new Item(e.getText(), "PLAYER");
-				im.addItem(i);
-			}
-		} catch (IOException e1) {
-			System.out.println("Player.readItems() could find no file");
-			e1.printStackTrace();
-		}
-	}
-
-	public void writeData() {
-		sw = new StringWriter();
-		writer = new XmlWriter(sw);
-		System.out.println("Player.writeData() is beginning");
-		try {
-			file = Gdx.files.local("player.xml");
-			writeStats();
-			writeItems();
-			file.writeString(sw.toString(), false);
-		} catch (IOException e) {
-			System.out.println("Player.writeData() dun goofed");
-			e.printStackTrace();
-		}
-
-		finally {
-			try {
-				writer.close();
-			} catch (Exception ignore) {
-				// IGNORED
+		for (Entity e : level.getCritters()) {
+			tempCollision = new Rectangle(this.getCollision().x + horVelocity,
+					this.getCollision().y, this.getCollision().width,
+					this.getCollision().height);
+			if (Intersector.overlaps(tempCollision, e.getCollision())) {
+				canMove = false;
+				e.handleCollision(this);
+				return canMove;
 			}
 		}
-		System.out.println("Player.writeData() is ending");
-	}
-
-	public void writeStats() throws IOException {
-		writer.element("Player").element("Stats").element("Strength").text(str)
-				.pop().element("Intelligence").text(intel).pop()
-				.element("Wisdom").text(wis).pop().element("Agility")
-				.text(agility).pop().element("Vitality").text(vit).pop().pop();
-		System.out.println(sw);
-	}
-
-	public void writeItems() throws IOException {
-		writer.element("Inventory").element("Coins").text(coins).pop()
-				.element("Items");
-		for (Item i : im.getListOfItems()) {
-			writer.element("Item").text(i.getInputString()).pop();
+		for (Rectangle r : level.getColliders()) {
+			tempCollision = new Rectangle(this.getCollision().x + horVelocity,
+					this.getCollision().y, this.getCollision().width,
+					this.getCollision().height);
+			if (Intersector.overlaps(tempCollision, r)) {
+				canMove = false;
+				return canMove;
+			}
 		}
-		writer.pop().pop().pop();
-		System.out.println(sw);
-		// file.writeString(sw.toString(), true);
+		return canMove;
+	}
+
+	public void checkCollision() {
+		// Dirty hack
+		fs = floorState.inAir;
+		if (checkGravityCollision(vertVelocity)) {
+			fs = floorState.onGround;
+			vertVelocity = 0f;
+		}
+		if (checkLadderCollision()) {
+			fs = floorState.onLadder;
+			if (vertVelocity < 0) {
+				vertVelocity = 0f;
+			}
+		}
+	}
+
+	public Boolean checkCollision(Float inputVelocity) {
+		Rectangle tempCollision = new Rectangle(this.getCollision().x,
+				this.getCollision().y + inputVelocity,
+				this.getCollision().width, this.getCollision().height
+						+ inputVelocity);
+		for (Rectangle r : level.getColliders()) {
+			if (Intersector.overlaps(tempCollision, r)) {
+				// Player hit something
+				return true;
+
+			}
+		}
+		return false;
+	}
+
+	public Boolean checkGravityCollision(Float inputVelocity) {
+		Rectangle tempCollision = new Rectangle(this.getCollision().x,
+				this.getCollision().y + inputVelocity,
+				this.getCollision().width, this.getCollision().height
+						+ inputVelocity);
+		for (Rectangle r : level.getColliders()) {
+			if (Intersector.overlaps(tempCollision, r)) {
+				// If the player's collision box is greater than the y location
+				// of the collider box, the player is above it
+				// and therefore must be on the ground
+				for (float i = vertVelocity / 2; i > 0; i--) {
+					if (i % 2 == 0) {
+						dustList.add(new DustCloud("Right", location.x,
+								location.y));
+					}
+					dustList.add(new DustCloud("Left", location.x, location.y));
+				}
+				vertVelocity = 0;
+				if (tempCollision.y > r.y) {
+					// Player has hit the ground
+					return true;
+				}
+			}
+		}
+
+		/*
+		 * for(Zone z : level.getZones()) { Rectangle r = z.getRectangle();
+		 * if(Intersector.overlaps(tempCollision, r)) { if(tempCollision.y >
+		 * r.y) { return true; } }
+		 * 
+		 * 
+		 * }
+		 */
+
+		return false;
 	}
 
 	public void checkInventory() {
@@ -334,6 +386,57 @@ public class Player {
 			currentState = State.Moving;
 		}
 		im.update();
+	}
+
+	public Boolean checkLadderCollision() {
+
+		Rectangle tempCollision = new Rectangle(this.getCollision().x,
+				this.getCollision().y + vertVelocity,
+				this.getCollision().width, this.getCollision().height
+						+ vertVelocity);
+
+		for (Zone z : level.getZones()) {
+			if (z instanceof LadderZone) {
+				Rectangle r = z.getRectangle();
+				// if (Intersector.overlaps(this.getCollision(), r)) {
+				if (Intersector.overlaps(tempCollision, r)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public void checkLevelChange() {
+		Rectangle tempCollision;
+		for (Zone z : level.getZones()) {
+			tempCollision = new Rectangle(this.getCollision().x,
+					this.getCollision().y, this.getCollision().width,
+					this.getCollision().height);
+			if (Intersector.overlaps(tempCollision, z.getRectangle())
+					&& z instanceof TeleZone) {
+
+				writeData();
+				System.out
+						.println("Player.checkLevelChange is getting a zone change of the type "
+								+ ((TeleZone) z).getType());
+				switch (((TeleZone) z).getType()) {
+				case "ORTHOGRAPHIC":
+					System.out
+							.println("Player.checkLevel change is setting level to a new orthographic level");
+					// TODO:ADD LEVEL CODE HERE
+					break;
+				case "PLATFORM":
+					System.out
+							.println("Player.checkLevel change is setting level to a new platform level");
+					// level.ms.changeLevel(new PlatformLevel(level.ms,
+					// ((TeleZone) z).getDestination()));
+					break;
+				}
+
+			}
+		}
 	}
 
 	public void checkMovement() {
@@ -455,37 +558,6 @@ public class Player {
 		return 99999999;
 	}
 
-	public void checkLevelChange() {
-		Rectangle tempCollision;
-		for (Zone z : level.getZones()) {
-			tempCollision = new Rectangle(this.getCollision().x,
-					this.getCollision().y, this.getCollision().width,
-					this.getCollision().height);
-			if (Intersector.overlaps(tempCollision, z.getRectangle())
-					&& z instanceof TeleZone) {
-
-				writeData();
-				System.out
-						.println("Player.checkLevelChange is getting a zone change of the type "
-								+ ((TeleZone) z).getType());
-				switch (((TeleZone) z).getType()) {
-				case "ORTHOGRAPHIC":
-					System.out
-							.println("Player.checkLevel change is setting level to a new orthographic level");
-					// TODO:ADD LEVEL CODE HERE
-					break;
-				case "PLATFORM":
-					System.out
-							.println("Player.checkLevel change is setting level to a new platform level");
-					// level.ms.changeLevel(new PlatformLevel(level.ms,
-					// ((TeleZone) z).getDestination()));
-					break;
-				}
-
-			}
-		}
-	}
-
 	public void checkTrading() {
 		if (tradeSetup) {
 			th.Update();
@@ -529,6 +601,10 @@ public class Player {
 		return boundingRectangle;
 	}
 
+	public ArrayList<DustCloud> getDustList() {
+		return dustList;
+	}
+
 	public TextureRegion getFrame() {
 		return currentFrame;
 	}
@@ -564,26 +640,6 @@ public class Player {
 
 	}
 
-	public void setStats(String inputStat, int inputInt) {
-		switch (inputStat) {
-		case "Strength":
-			str += inputInt;
-			break;
-		case "Wisdom":
-			wis += inputInt;
-			break;
-		case "Intelligence":
-			intel += inputInt;
-			break;
-		case "Agility":
-			agility += inputInt;
-			break;
-		case "Vitality":
-			vit += inputInt;
-			break;
-		}
-	}
-
 	public Texture getTexture() {
 		return null;
 	}
@@ -600,10 +656,12 @@ public class Player {
 		return tradeSetup;
 	}
 
+	@Override
 	public float getX() {
 		return location.x;
 	}
 
+	@Override
 	public float getY() {
 		return location.y;
 	}
@@ -673,6 +731,59 @@ public class Player {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			writeData();
 			System.exit(0);
+		}
+
+	}
+
+	public void handleMoving() {
+
+		if (Gdx.input.isKeyPressed(Keys.A)) {
+
+			animationState = AnimationState.Left;
+			handleAnimation();
+			moveDirection(Direction.Left);
+		} else if (Gdx.input.isKeyPressed(Keys.D)) {
+
+			animationState = AnimationState.Right;
+			applySpeed(Direction.Right);
+			handleAnimation();
+		} else {
+			applyFriction();
+		}
+		if (checkColliders()) {
+			location.x += horVelocity;
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.W)) {
+			animationState = AnimationState.Up;
+			handleAnimation();
+			if (fs == floorState.onLadder && !checkCollision(speed / 2f)) {
+				location.y += speed / 2;
+			}
+		} else if (Gdx.input.isKeyPressed(Keys.S)) {
+			animationState = AnimationState.Up;
+			handleAnimation();
+			if (fs == floorState.onLadder && !checkCollision(speed / -2f)) {
+				location.y -= speed / 2;
+			}
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+			if (fs == floorState.onGround || fs == floorState.onLadder) {
+				if (jumpCooldown < 0) {
+					jump();
+				}
+			}
+		}
+
+		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
+			if (fs == floorState.onGround || fs == floorState.onLadder) {
+				currentState = State.Inventory;
+			}
+		}
+
+		if (Gdx.input.isKeyJustPressed(Keys.Q)) {
+			System.out.println(fs.toString());
 		}
 
 	}
@@ -759,6 +870,12 @@ public class Player {
 		}
 	}
 
+	public void jump() {
+		fs = floorState.inAir;
+		vertVelocity = agility + 10f;
+		jumpCooldown = 0.1f;
+	}
+
 	public void loadMap() {
 		mapProperties = level.getCurrentMapProperties();
 		int mapGridWidth = mapProperties.get("width", Integer.class);
@@ -768,6 +885,73 @@ public class Player {
 
 		mapWidth = mapGridWidth * tilePixelWidth;
 		mapHeight = mapGridHeight * tilePixelHeight;
+	}
+
+	public void moveDirection(Direction inputDirection) {
+		switch (inputDirection) {
+		case Left:
+			applySpeed(inputDirection);
+			break;
+		case Right:
+			applySpeed(inputDirection);
+
+			break;
+		}
+
+	}
+
+	public void readData() {
+		readStats();
+		im = new InventoryManager(this);
+		readItems();
+	}
+
+	public void readItems() {
+		Element root;
+		try {
+			// TODO: FIX THIS TO BE LOCAL, NOT INTERNAL
+			root = reader.parse(Gdx.files.local("player.xml"));
+			Element inventory = root.getChildByName("Inventory");
+			coins = inventory.getInt("Coins");
+			Element items = inventory.getChildByName("Items");
+			Array<Element> inventoryList = items.getChildrenByName("Item");
+			for (Element e : inventoryList) {
+				System.out.println("Name : " + e.getName());
+				System.out.println("Text: " + e.getText());
+			}
+			for (Element e : inventoryList) {
+				Item i = new Item(e.getText(), "PLAYER");
+				im.addItem(i);
+			}
+		} catch (IOException e1) {
+			System.out.println("Player.readItems() could find no file");
+			e1.printStackTrace();
+		}
+	}
+
+	public void readStats() {
+
+		Element root;
+		try {
+			root = reader.parse(Gdx.files.local("player.xml"));
+			// Build player stats
+			Element stats = root.getChildByName("Stats");
+
+			str = stats.getInt("Strength");
+			System.out.println("Str is : " + str);
+			wis = stats.getInt("Wisdom");
+			intel = stats.getInt("Intelligence");
+			agility = stats.getInt("Agility");
+			vit = stats.getInt("Vitality");
+		} catch (IOException e) {
+			System.out.println("Player.readStats() could find no file");
+			e.printStackTrace();
+		}
+
+	}
+
+	public void reduceJumpCooldown() {
+		jumpCooldown -= Gdx.graphics.getDeltaTime();
 	}
 
 	public void screenEdging() {
@@ -793,8 +977,16 @@ public class Player {
 		coins = inputCoins;
 	}
 
+	public void setFirstName(String inputString) {
+		firstName = inputString;
+	}
+
 	public void setInventoryManager(InventoryManager inputIM) {
 		im = inputIM;
+	}
+
+	public void setLastName(String inputString) {
+		lastName = inputString;
 	}
 
 	public void setStateChatting() {
@@ -818,6 +1010,26 @@ public class Player {
 		currentState = State.Trading;
 	}
 
+	public void setStats(String inputStat, int inputInt) {
+		switch (inputStat) {
+		case "Strength":
+			str += inputInt;
+			break;
+		case "Wisdom":
+			wis += inputInt;
+			break;
+		case "Intelligence":
+			intel += inputInt;
+			break;
+		case "Agility":
+			agility += inputInt;
+			break;
+		case "Vitality":
+			vit += inputInt;
+			break;
+		}
+	}
+
 	public void setupTrading() {
 		if (!tradeSetup) {
 			System.out
@@ -834,8 +1046,79 @@ public class Player {
 
 		handleInput();
 		handleCollision();
+		checkCollision();
 		screenEdging();
 		checkLevelChange();
+		updateLists();
+
+		switch (fs) {
+		case onGround:
+			reduceJumpCooldown();
+			break;
+		case inAir:
+			applyGravity();
+			adjustGravity();
+			break;
+		case onLadder:
+			reduceJumpCooldown();
+			break;
+		}
+
+	}
+
+	public void updateLists() {
+		Iterator<DustCloud> dl = dustList.iterator();
+		while (dl.hasNext()) {
+			DustCloud dc = dl.next();
+			dc.update();
+			if (dc.getTimer() <= 0) {
+				dl.remove();
+				System.out.println("Removed dustcloud from dust list");
+			}
+		}
+	}
+
+	public void writeData() {
+		sw = new StringWriter();
+		writer = new XmlWriter(sw);
+		System.out.println("Player.writeData() is beginning");
+		try {
+			file = Gdx.files.local("player.xml");
+			writeStats();
+			writeItems();
+			file.writeString(sw.toString(), false);
+		} catch (IOException e) {
+			System.out.println("Player.writeData() dun goofed");
+			e.printStackTrace();
+		}
+
+		finally {
+			try {
+				writer.close();
+			} catch (Exception ignore) {
+				// IGNORED
+			}
+		}
+		System.out.println("Player.writeData() is ending");
+	}
+
+	public void writeItems() throws IOException {
+		writer.element("Inventory").element("Coins").text(coins).pop()
+				.element("Items");
+		for (Item i : im.getListOfItems()) {
+			writer.element("Item").text(i.getInputString()).pop();
+		}
+		writer.pop().pop().pop();
+		System.out.println(sw);
+		// file.writeString(sw.toString(), true);
+	}
+
+	public void writeStats() throws IOException {
+		writer.element("Player").element("Stats").element("Strength").text(str)
+				.pop().element("Intelligence").text(intel).pop()
+				.element("Wisdom").text(wis).pop().element("Agility")
+				.text(agility).pop().element("Vitality").text(vit).pop().pop();
+		System.out.println(sw);
 	}
 
 }
