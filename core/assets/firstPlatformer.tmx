@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="sample" tilewidth="32" tileheight="32">
+  <image source="../tileset/firstPlatform/Tiles_64x64.png" width="512" height="512"/>
+  <tile id="168">
+   <properties>
+    <property name="Type" value="Ladder"/>
+   </properties>
+  </tile>
+  <tile id="169">
+   <properties>
+    <property name="Type" value="Ladder"/>
+   </properties>
+  </tile>
+  <tile id="170">
+   <properties>
+    <property name="Type" value="Ladder"/>
+   </properties>
+  </tile>
+  <tile id="171">
+   <properties>
+    <property name="Type" value="Ladder"/>
+   </properties>
+  </tile>
+  <tile id="184">
+   <properties>
+    <property name="Type" value="Ladder"/>
+   </properties>
+  </tile>
+  <tile id="185">
+   <properties>
+    <property name="Type" value="Ladder"/>
+   </properties>
+  </tile>
+  <tile id="186">
+   <properties>
+    <property name="Type" value="Ladder"/>
+   </properties>
+  </tile>
+  <tile id="187">
+   <properties>
+    <property name="Type" value="Ladder"/>
+   </properties>
+  </tile>
+  <tile id="255">
+   <properties>
+    <property name="Destination" value="firstMap.tmx"/>
+    <property name="mapType" value="orthographic"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Background" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt0dEJwjAQgOG8OoMDuEKLk1Vn1BGcRQspHKUW9OWi+QIfJEcfjv5DKWUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADo3NSISxXve7a+ezebVvetd5xnNwEAAOD3nFey9+nVsVre1yB7tx7p0Zalx1jdXu56NNNj9tCjqR6jHnqwK/Y4Vdk7AdCXQ5W9B3oAAPyreOIse69W/smnJ3v3bzwBQ4ib/Q==
+  </data>
+ </layer>
+ <layer name="Foreground" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2U1O20AYBmCrOzgB7Q44QVf0ClWBA3AGLgY3aKGV2rJrxV/YwIIVYtNL9LPwUDdKIFZsPDbPI73y2HKckV85yshFAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHn5IMVB5LC2T79SH+Thc+RL35PgkT7yoo+86CMv+siLPvLSRh/pGt8iX6ttGtNMG30cRY4jm1Veyq/ITWS7yhgMsY+yh9+RP5GzyGnkPvI98iMyqfbvX2AubWuzj/XIxtIzmu+6+L+H9F23xcO9v4hcFv+6WO9wLl1ps4/3y09npvrz0HXnfWuzj7bNex7GLMc+XtPzMK3L9cdWw/Nfcw/Jc328WyCrT6SJLn6XVqo5DkUbfTzXyaLp4v/Q2PoYuvJ5O+97Eg0MrY+VqUxmHEs562mOyxhiH0O8z4saWh9jp4+86CMv+uhWWuNuz8jHGefrozvlu5lyjZvWaOl9wNta9qY+o4/FfYq8aZByjVv2cFJt0/uAtcjP6ng5rncy3cfaiLOsp65dv7/1TOacfxe5qsb7kZ3i4Tes3O7Wxn8B76uJYQ==
+  </data>
+ </layer>
+ <layer name="Overhead" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt1rkJACAAA0A31A10/ym0shUE8buD9GkCCQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4VW9LuEnS5pewuAQAXmv00vtAas5/GF3qbvZ3F3gAAGKkI0QV5
+  </data>
+ </layer>
+ <layer name="Objects" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2WEKhCAQBtDul3mh7rxn2AQHZOhXFAm9Bx/VtKmsbLi4LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwj3pk7cfSU3sAAGbT1i0l5WwdM6bVtyO/F8abtbHMMI5Z5LncesbzlifWpuWBNrmmze/+9iA+IN6R+TdWh3rLvpgPAACYXezrxB5PGWqxth+v83+AqJVUi/Nob7xXU78lfXZNz+d+cl9n7Wx3fkl81h89oyGd
+  </data>
+ </layer>
+ <layer name="Zones" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt17kJwEAMBMDrvxM/DfgpzooUODe34BnYfGFRoDEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4HtbZZ9dgnZV7tklaEtlnV2CdlTO2SVo7iOL+wD4N39dFn9dFntk8UdksUcWf10We2SxB/D2ABa8E58=
+  </data>
+ </layer>
+</map>

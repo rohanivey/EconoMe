@@ -7,6 +7,7 @@ public class GameStateManager extends Game {
 	private MainMenuScreen mainMenu;
 	private LoadScreen loadMenu;
 	private OptionsScreen optionsMenu;
+	private CharacterCreationState characterCreationMenu;
 
 	private AssetManager am;
 
@@ -19,16 +20,22 @@ public class GameStateManager extends Game {
 		mainMenu = new MainMenuScreen();
 		loadMenu = new LoadScreen();
 		optionsMenu = new OptionsScreen();
-		am = new AssetManager();
+		characterCreationMenu = new CharacterCreationState();
+		am = new AssetManager(this);
 
 		mainMenu.setGSM(this);
 		loadMenu.setGSM(this);
 		optionsMenu.setGSM(this);
+		characterCreationMenu.setGSM(this);
 		setScreen(mainMenu);
 	}
 
 	public void setMain() {
 		setScreen(mainMenu);
+	}
+
+	public void setCharacterCreation() {
+		setScreen(characterCreationMenu);
 	}
 
 	public void setLoad() {

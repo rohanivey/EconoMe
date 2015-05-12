@@ -16,13 +16,14 @@ public class MainMenuScreen implements Screen {
 	SpriteBatch sb;
 	Jukebox jukebox;
 	Stage stage;
+	GameStateManager gsm;
 	Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+
 	TextButton playButton = new TextButton("Play", skin);
 	TextButton loadButton = new TextButton("Load", skin);
 	TextButton optionsButton = new TextButton("Options", skin);
 	TextButton exitButton = new TextButton("Exit", skin);
 	Array<Button> buttonList = new Array<Button>();
-	GameStateManager gsm;
 	Boolean buttonsPlaced = false;
 
 	@Override
@@ -53,7 +54,7 @@ public class MainMenuScreen implements Screen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int playButton) {
 				System.out.println("Button clicked");
-				gsm.setOptions();
+				gsm.setCharacterCreation();
 				return true;
 			}
 		});

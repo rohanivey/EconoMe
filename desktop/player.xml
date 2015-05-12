@@ -1,0 +1,15 @@
+<Player>
+	<Stats>
+		<Strength>3</Strength>
+		<Intelligence>2</Intelligence>
+		<Wisdom>2</Wisdom>
+		<Agility>3</Agility>
+		<Vitality>3</Vitality>
+	</Stats>
+	<Inventory>
+		<Coins>153</Coins>
+		<Items>
+			<Item>Shield</Item>
+		</Items>
+	</Inventory>
+</Player>

@@ -1,0 +1,18 @@
+hairAtlas.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+brown bun
+  rotate: false
+  xy: 2, 2
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+orange bun
+  rotate: false
+  xy: 2, 68
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1

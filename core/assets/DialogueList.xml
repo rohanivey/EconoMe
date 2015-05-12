@@ -1,0 +1,24 @@
+<NPCS>
+		<dog>
+			<options>
+				<option id = "i1r" requirement = "intro" saidBy = "Dog" text = "WOOF WOOF! This is intro text the NPC says!" />
+				<option id = "d1" requirement = "none" saidBy = "Player" response = "d1r" text = "This is dialogue text the player can say." />
+				<option id = "d1r" requirement = "none" saidBy = "Dog" response = "d2" text = "This is NPC response to character chosen dialogue!" />
+				<option id = "d2" requirement = "d1r" saidBy = "Player" response = "none" text = "This is the main character's response to an NPC response." />
+				<option id = "q1" requirement = "none" saidBy = "Player" response = "q1r" text = "This is quest request text choice from the player!" />
+				<option id = "q1r" requirement = "none" saidBy = "Dog" response = "none" text = "This is quest reply text the NPC will say back!" />
+				<option id = "s" requirement = "shopping" saidBy = "Player" response = "sr" text = "This is the shop ID standard text the NPC can have." />
+				<option id = "sr" requirement = "none" saidBy = "Dog" response = "none" text = "This is what the NPC will say when asked for a shopping experience!" />
+			</options>
+		</dog>
+		
+		<tree>
+			<options>
+				<option id = "i1r" requirement = "none" saidBy = "Tree" response = "none" text = "Why are you talking to a tree you weirdo?" />
+			</options>
+		</tree>
+</NPCS>
+
+
+/////For word wrapping, a simple formula of checking the char length until the next SPACE and adding it to the current tally of letters until the word before the next space that would go over the  
+/////max amount, then cut before that word, start up a new tally. Add the cut amount to an array list of the current chat to be printed.

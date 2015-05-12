@@ -1,0 +1,15 @@
+<Player>
+	<Stats>
+		<Strength> 1 </Strength>
+		<Intelligence> 1 </Intelligence>
+		<Wisdom> 1 </Wisdom>
+		<Agility> 1 </Agility>
+	</Stats>
+	<Inventory>
+		<Coins> 153 </Coins>
+		<Items>
+			<Item> DonkHammer </Item>
+			<Item> Shield </Item>
+		</Items>
+	</Inventory>
+</Player>

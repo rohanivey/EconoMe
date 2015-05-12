@@ -78,7 +78,7 @@ public class Player {
 
 	protected int coins = 150;
 
-	protected Level level;
+	protected PlayScreen level;
 	protected XmlReader reader;
 	protected StringWriter sw;
 	protected XmlWriter writer;
@@ -86,6 +86,79 @@ public class Player {
 
 	protected ArrayList<Feat> featList = new ArrayList<Feat>();
 	protected String firstName, lastName;
+
+	public Player() {
+	}
+
+	public Player(int inputX, int inputY, PlayScreen inputLevel) {
+
+		location = new Vector2(inputX, inputY);
+		previousLocation = location;
+		level = inputLevel;
+		img = new Texture("animations/player.png");
+		TextureRegion[][] tempFrames = TextureRegion.split(img, img.getWidth()
+				/ FRAME_COLS, img.getHeight() / FRAME_ROWS);
+		TextureRegion[][] tempFrames2 = TextureRegion.split(new Texture(
+				"animations/ro2.png"), 32, 64);
+		for (int i = 0; i < FRAME_ROWS; i++) {
+			animationFrames = new TextureRegion[FRAME_COLS];
+			int index = 0;
+			for (int j = 0; j < FRAME_COLS; j++) {
+				animationFrames[index++] = tempFrames[i][j];
+			}
+			animationFrames2 = new TextureRegion[30];
+			for (int n = 0; n < 30; n++) {
+
+				animationFrames2[n] = tempFrames2[n][0];
+			}
+			switch (i) {
+			case 0:
+				walkUp = new Animation(1f / 9f, animationFrames);
+				break;
+			case 1:
+				walkLeft = new Animation(1f / 9f, animationFrames);
+				break;
+			case 2:
+				// walkDown = new Animation(1f / 9f, animationFrames);
+				walkDown = new Animation(1f / 30f, animationFrames2);
+				break;
+			case 3:
+				walkRight = new Animation(1f / 9f, animationFrames);
+				break;
+
+			}
+		}
+		/*
+		 * walkLeft = new Animation(1f/9f, animationFrames[1]); walkRight = new
+		 * Animation(1f/9f, animationFrames[3]); walkUp = new Animation(1f/9f,
+		 * animationFrames[0]); walkDown = new Animation(1f/9f,
+		 * animationFrames[2]);
+		 */
+		stateTime = 0f;
+		loadMap();
+		currentFrame = walkDown.getKeyFrame(stateTime, true);
+
+		boundingRectangle = new Rectangle();
+		interactCircleLocation = new Vector2(location);
+		interactCircle = new Circle(interactCircleLocation.x,
+				interactCircleLocation.y, 4);
+		interactTimer = 0f;
+		reader = new XmlReader();
+		readData();
+
+		System.out.println("Player Stats: ");
+		System.out.println("Strength: " + str);
+		System.out.println("Intelligence: " + intel);
+		System.out.println("Wisdom: " + wis);
+		System.out.println("Agility: " + agility);
+		System.out.println("Coins: " + coins);
+		speed = agility;
+		System.out.println("Speed: " + speed);
+
+		characterKnowledge = new String[1000][100];
+		characterKnowledge[0][0] = "thyself";
+
+	}
 
 	public void addFeat(Feat inputFeat) {
 		featList.add(inputFeat);
