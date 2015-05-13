@@ -2,8 +2,11 @@ package com.rohan.econome;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -12,9 +15,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public class Level extends Actor {
+public class Level implements Screen {
 
 	public static String getRegionName() {
 		return null;
@@ -32,7 +35,7 @@ public class Level extends Actor {
 	protected ArrayList<Entity> critters;
 	protected ArrayList<Zone> zoneArray;
 
-	protected Camera cam;
+	protected OrthographicCamera cam;
 
 	protected Player player;
 	protected GameStateManager gsm;
@@ -43,10 +46,22 @@ public class Level extends Actor {
 	protected DialogueHandler dh;
 
 	protected SpriteBatch sb;
+	private Jukebox jukebox;
+	private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-	public Level(PlayScreen inputPlayScreen, String inputLevel) {
-		cam = inputPlayScreen.getCam();
-		sb = inputPlayScreen.getSb();
+	public Level(GameStateManager inputGSM, String inputLevel) {
+		gsm = inputGSM;
+		sb = gsm.getAM().getSB();
+		jukebox = gsm.getAM().getJukebox();
+
+		cam = new OrthographicCamera(Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight());
+
+		// No need for the two below, Don't try to add them
+		// Each ui element will have their own stage which will be
+		// pushed and popped in the GSM.
+		// stage = new Stage();
+		// Gdx.input.setInputProcessor(stage);
 
 		level = new ArrayList<TiledMap>();
 		critters = new ArrayList<Entity>();
@@ -56,7 +71,7 @@ public class Level extends Actor {
 
 		areaLoad(inputLevel);
 
-		player = new Player(30, 30, this);
+		player = new Player(30, 120, this);
 
 	}
 
@@ -101,23 +116,20 @@ public class Level extends Actor {
 		cam.update();
 	}
 
-	public void draw() {
+	@Override
+	public void render(float delta) {
+		update();
 		drawMap();
-
-		ArrayList<DustCloud> tempCloudList = player.getDustList();
-
-		for (DustCloud d : tempCloudList) {
-			sb.begin();
-			sb.draw(d.getTexture(), d.getX(), d.getY(), 8, 8);
-			sb.end();
-		}
 	}
 
 	public void drawMap() {
 
-		System.out.println("Level.drawMap() is drawing");
+		// System.out.println("Level.drawMap() is drawing");
 
-		// mapRenderer.setView(cam);
+		mapRenderer.setView(cam);
+
+		sb.begin();
+
 		mapRenderer.renderTileLayer(bg);
 		mapRenderer.renderTileLayer(fg);
 		mapRenderer.renderTileLayer(oj);
@@ -134,7 +146,13 @@ public class Level extends Actor {
 			sb.draw(e.getTexture(), e.getX(), e.getY());
 		}
 
+		ArrayList<DustCloud> tempCloudList = player.getDustList();
+		for (DustCloud d : tempCloudList) {
+			sb.draw(d.getTexture(), d.getX(), d.getY(), 8, 8);
+		}
+
 		mapRenderer.renderTileLayer(oh);
+		sb.end();
 	}
 
 	public void entityUpdate() {
@@ -278,6 +296,42 @@ public class Level extends Actor {
 		player.update();
 		entityUpdate();
 		cameraHandler();
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -413,7 +413,8 @@ public class CharacterCreationState implements Screen {
 						int pointer, int yesButton) {
 					System.out
 							.println("MakeSprite yes button pressed in doublecheck");
-					gsm.setScreen(new PlayScreen("firstMap.tmx"));
+					gsm.setScreen(new Level(gsm, "firstPlatformer.tmx"));
+					stage.dispose();
 					return true;
 				}
 			});

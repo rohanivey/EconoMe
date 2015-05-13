@@ -16,13 +16,12 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.XmlWriter;
 
-public class Player extends Actor {
+public class Player {
 
 	enum AnimationState {
 		Left, Right, Up, Down
@@ -659,12 +658,10 @@ public class Player extends Actor {
 		return tradeSetup;
 	}
 
-	@Override
 	public float getX() {
 		return location.x;
 	}
 
-	@Override
 	public float getY() {
 		return location.y;
 	}

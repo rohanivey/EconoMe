@@ -16,6 +16,7 @@ public class AssetManager {
 	}
 
 	public SpriteBatch getSB() {
+		sb = new SpriteBatch();
 		return sb;
 	}
 
