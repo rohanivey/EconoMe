@@ -105,6 +105,8 @@ public class Player {
 
 	private ArrayList<DustCloud> dustList = new ArrayList<DustCloud>();
 
+	public Boolean hasJumped = false;
+
 	public Player(int inputX, int inputY, Level inputLevel) {
 
 		location = new Vector2(inputX, inputY);
@@ -215,12 +217,16 @@ public class Player {
 			if (horVelocity > speed * -4 && fs == floorState.onGround) {
 				horVelocity -= speed / 2;
 				dustList.add(new DustCloud("Right", location.x, location.y));
+			} else if (fs == floorState.onLadder) {
+				horVelocity -= speed / 5f;
 			}
 			break;
 		case Right:
 			if (horVelocity < speed * 4 && fs == floorState.onGround) {
 				horVelocity += speed / 2;
 				dustList.add(new DustCloud("Left", location.x, location.y));
+			} else if (fs == floorState.onLadder) {
+				horVelocity += speed / 5f;
 			}
 			break;
 		}
@@ -320,12 +326,14 @@ public class Player {
 			fs = floorState.onGround;
 			vertVelocity = 0f;
 			jumpCount = agility + str;
+			hasJumped = false;
 		}
 		if (checkLadderCollision()) {
 			fs = floorState.onLadder;
 			if (vertVelocity < 0) {
 				vertVelocity = 0f;
 				jumpCount = agility + str;
+				hasJumped = false;
 			}
 		}
 	}
@@ -718,7 +726,7 @@ public class Player {
 			checkInventory();
 			break;
 		case Moving:
-			checkMovement();
+			handleMoving();
 			interact();
 			break;
 		case Trading:
@@ -769,12 +777,14 @@ public class Player {
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-			if (fs == floorState.onGround || fs == floorState.onLadder) {
-				if (jumpCooldown < 0) {
-					jump();
-				}
+			// if (fs == floorState.onGround || fs == floorState.onLadder) {
+			if (!hasJumped) {
+				// if (jumpCooldown < 0) {
+				// System.out.println("Space pressed");
+				jump();
 			}
 		}
+		// }
 
 		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			if (fs == floorState.onGround || fs == floorState.onLadder) {
@@ -871,11 +881,15 @@ public class Player {
 	}
 
 	public void jump() {
-		if(jumpCount > 0)
-		{
-		fs = floorState.inAir;
-		vertVelocity = agility + 10f;
-		jumpCooldown = 0.1f;
+		// While the player has a jump left and space is still held
+		else if (jumpCount > 0 && Gdx.input.isKeyPressed(Keys.SPACE)) {
+			vertVelocity = agility + 10f;
+			jumpCount -= 1;
+		}
+		// But if the player runs out of jump or doesn't keep Space held, then
+		// the player has already jumped
+		else {
+			hasJumped = true;
 		}
 	}
 
