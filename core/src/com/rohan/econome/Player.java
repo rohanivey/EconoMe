@@ -169,6 +169,7 @@ public class Player extends Actor {
 		System.out.println("Agility: " + agility);
 		System.out.println("Coins: " + coins);
 		speed = agility;
+		jumpCount = agility + str;
 		System.out.println("Speed: " + speed);
 
 		characterKnowledge = new String[1000][100];
@@ -319,11 +320,13 @@ public class Player extends Actor {
 		if (checkGravityCollision(vertVelocity)) {
 			fs = floorState.onGround;
 			vertVelocity = 0f;
+			jumpCount = agility + str;
 		}
 		if (checkLadderCollision()) {
 			fs = floorState.onLadder;
 			if (vertVelocity < 0) {
 				vertVelocity = 0f;
+				jumpCount = agility + str;
 			}
 		}
 	}
@@ -871,9 +874,12 @@ public class Player extends Actor {
 	}
 
 	public void jump() {
+		if(jumpCount > 0)
+		{
 		fs = floorState.inAir;
 		vertVelocity = agility + 10f;
 		jumpCooldown = 0.1f;
+		}
 	}
 
 	public void loadMap() {
