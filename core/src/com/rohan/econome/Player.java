@@ -882,7 +882,7 @@ public class Player {
 
 	public void jump() {
 		// While the player has a jump left and space is still held
-		else if (jumpCount > 0 && Gdx.input.isKeyPressed(Keys.SPACE)) {
+		if (jumpCount > 0 && Gdx.input.isKeyPressed(Keys.SPACE)) {
 			vertVelocity = agility + 10f;
 			jumpCount -= 1;
 		}
