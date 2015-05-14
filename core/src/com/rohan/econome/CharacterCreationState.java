@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class CharacterCreationState implements Screen {
 
@@ -34,7 +34,8 @@ public class CharacterCreationState implements Screen {
 	private Player tempPlayer;
 	private Stage stage;
 	private Table mainTable;
-	private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+	private Skin skin = new Skin(
+			Gdx.files.internal("Character Creation/uiskin.json"));
 	private Jukebox jukebox;
 	private GameStateManager gsm;
 
@@ -49,8 +50,8 @@ public class CharacterCreationState implements Screen {
 
 	private int tempStr, tempWis, tempInt, tempAgi, tempVit, pointsToSpend;
 
-	private TextButton minusStr, plusStr, minusWis, plusWis, minusInt, plusInt,
-			minusAgi, plusAgi, minusVit, plusVit;
+	private Button plusStr, plusWis, plusInt, plusAgi, plusVit, minusStr,
+			minusWis, minusInt, minusAgi, minusVit;
 
 	private Label pointsToSpendText, str, wis, intel, agi, vit, pointsText,
 			strText, wisText, intelText, agiText, vitText;
@@ -68,7 +69,7 @@ public class CharacterCreationState implements Screen {
 			plusMouth;
 	private Image hairImage, eyeImage, mouthImage;
 
-	ArrayList<Actor> actorList = new ArrayList<Actor>();
+	ArrayList<Actor> actorList;
 
 	@Override
 	public void show() {
@@ -279,16 +280,29 @@ public class CharacterCreationState implements Screen {
 		});
 	}
 
+	public void hideActors() {
+		for (Actor a : actorList) {
+			a.setVisible(false);
+		}
+	}
+
+	public void showActors() {
+		for (Actor a : actorList) {
+			a.setVisible(true);
+		}
+	}
+
 	public Boolean doubleCheck() {
 		final Table tempTable = new Table(skin);
 		tempTable.setFillParent(true);
-		mainTable.setVisible(false);
 
 		Label tempLabel;
 		TextButton yesButton;
 		TextButton noButton;
 		switch (currentPage) {
 		case makeName:
+			hideActors();
+
 			tempLabel = new Label("Are you sure you are " + tempFirst + " "
 					+ tempSecond + "?", skin);
 			yesButton = new TextButton("Yes", skin);
@@ -297,7 +311,7 @@ public class CharacterCreationState implements Screen {
 			tempTable.add(tempLabel);
 			tempTable.row();
 			tempTable.add(yesButton);
-			tempTable.add(noButton).uniform();
+			tempTable.add(noButton);
 			stage.addActor(tempTable);
 			tempTable.toFront();
 
@@ -307,6 +321,8 @@ public class CharacterCreationState implements Screen {
 						int pointer, int yesButton) {
 					tempPlayer.setFirstName(tempFirst);
 					tempPlayer.setLastName(tempSecond);
+
+					System.out.println(tempFirst + " " + tempSecond);
 					makeStatsSetup();
 					return true;
 				}
@@ -315,13 +331,15 @@ public class CharacterCreationState implements Screen {
 				@Override
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int noButton) {
-					mainTable.setVisible(true);
+					showActors();
 					tempTable.remove();
 					return true;
 				}
 			});
 			break;
 		case makeStats:
+			mainTable.setVisible(false);
+			nextButton.setVisible(false);
 			tempLabel = new Label("Are you happy with what you can do?", skin,
 					"default");
 			yesButton = new TextButton("Yes", skin);
@@ -352,6 +370,7 @@ public class CharacterCreationState implements Screen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int noButton) {
 					mainTable.setVisible(true);
+					nextButton.setVisible(true);
 					tempTable.remove();
 					return true;
 				}
@@ -359,6 +378,8 @@ public class CharacterCreationState implements Screen {
 
 			break;
 		case makeFeats:
+			mainTable.setVisible(false);
+			nextButton.setVisible(false);
 			tempLabel = new Label("Are you sure you want to choose "
 					+ currentFeat.getName(), skin, "default");
 			yesButton = new TextButton("Yes", skin);
@@ -385,6 +406,7 @@ public class CharacterCreationState implements Screen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int noButton) {
 					mainTable.setVisible(true);
+					nextButton.setVisible(true);
 					tempTable.remove();
 					return true;
 				}
@@ -528,7 +550,7 @@ public class CharacterCreationState implements Screen {
 			actorList.add(a);
 		}
 
-		stage.setDebugAll(true);
+		// stage.setDebugAll(true);
 
 		minusHair.addListener(new InputListener() {
 			@Override
@@ -579,6 +601,7 @@ public class CharacterCreationState implements Screen {
 		featRequirement = new Label("", skin, "default");
 		featDescription = new Label("", skin, "default");
 		for (final Feat f : tempFeatManager.getFeatList()) {
+			System.out.println(f.getName());
 			Button tempButton = new TextButton(f.getName(), skin);
 			tempButton.addListener(new InputListener() {
 				@Override
@@ -591,38 +614,17 @@ public class CharacterCreationState implements Screen {
 					return true;
 				}
 			});
-			featTable.add(tempButton);
+			featTable.add(tempButton).row();
+
 		}
 
+		System.out.println(featTable.getChildren());
 		scroll = new ScrollPane(featTable);
 		scroll.setScrollBarPositions(false, true);
-		// scroll.setSize(featTable.getWidth(), featTable.getHeight());
 
 		Label titleLabel = new Label("Choose a Feat", skin, "default");
-
-		/*
-		 * titleLabel.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()
-		 * / 10f); featTable.setSize(Gdx.graphics.getWidth() / 2,
-		 * Gdx.graphics.getHeight() * 0.40f);
-		 * featImage.setSize(Gdx.graphics.getWidth() / 2,
-		 * Gdx.graphics.getHeight() * 0.40f);
-		 * featRequirement.setSize(Gdx.graphics.getWidth(),
-		 * Gdx.graphics.getHeight() / 10f);
-		 * featDescription.setSize(Gdx.graphics.getWidth(),
-		 * Gdx.graphics.getHeight() / 5f);
-		 */
-
-		/*
-		 * mainTable.add(titleLabel) .size(Gdx.graphics.getWidth(),
-		 * Gdx.graphics.getHeight() / 10f) .row();
-		 * mainTable.add(scroll).size(Gdx.graphics.getWidth() / 2,
-		 * Gdx.graphics.getHeight() * 0.40f); mainTable .add(featImage)
-		 * .size(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() *
-		 * 0.40f).row(); mainTable.add(featRequirement)
-		 * .size(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 10f)
-		 * .row(); mainTable.add(featDescription).size(Gdx.graphics.getWidth(),
-		 * Gdx.graphics.getHeight() / 5f);
-		 */
+		featDescription.setWrap(true);
+		featDescription.setWidth(Gdx.graphics.getWidth() / 2);
 
 		mainTable.setFillParent(true);
 		mainTable.add(titleLabel).center().colspan(2).row();
@@ -634,61 +636,68 @@ public class CharacterCreationState implements Screen {
 		mainTable.add(featRequirement).width(Gdx.graphics.getWidth())
 				.height(Gdx.graphics.getHeight() / 10).expandX().colspan(2)
 				.row();
-		mainTable.add(featDescription).expand().fill().colspan(2).row();
+		mainTable
+				.add(featDescription)
+				.left()
+				.size(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 4);
+		mainTable.row();
 
 		nextButton = new TextButton("Next", skin);
-		mainTable.add(nextButton).expand().bottom().right();
+		nextButton.setX(stage.getWidth() - nextButton.getWidth() - 16);
+		nextButton.setY(16);
+		stage.addActor(nextButton);
 
 		defineNextButton(nextButton);
-
-		stage.setDebugAll(true);
 
 	}
 
 	public void makeNameSetup() {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
+		actorList = new ArrayList<Actor>();
 
-		mainTable = new Table(skin);
-		// mainTable.setWidth(Gdx.graphics.getWidth());
-		// mainTable.setHeight(Gdx.graphics.getHeight());
-		mainTable.setFillParent(true);
-		stage.addActor(mainTable);
+		Label firstName = new Label("First name: ", skin);
+		firstName.setX(Gdx.graphics.getWidth() / 2 - firstName.getWidth());
+		firstName.setY(Gdx.graphics.getHeight() / 2 + firstName.getHeight()
+				* 1.9f);
 
-		// sr = new ShapeRenderer();
-		// mainTable.setDebug(true);
+		firstNameTextField = new TextField("", skin);
+		firstNameTextField.setX(Gdx.graphics.getWidth() / 2);
+		firstNameTextField.setY(Gdx.graphics.getHeight() / 2
+				+ firstName.getHeight());
+		firstNameTextField.setAlignment(1);
+		firstNameTextField.setMaxLength(12);
 
-		firstNameTextField = new TextField("First Name", skin, "default");
-		firstNameTextField.setColor(Color.WHITE);
-		firstNameTextField.setWidth(32f);
-		firstNameTextField.setHeight(20f);
-		firstNameTextField.setY(Gdx.graphics.getHeight());
-		mainTable.add(firstNameTextField).uniform().center();
-		mainTable.row();
-		secondNameTextField = new TextField("Surname", skin);
-		secondNameTextField.setWidth(32f);
-		secondNameTextField.setHeight(20f);
-		mainTable.add(secondNameTextField).uniform().center();
-		mainTable.padTop(Gdx.graphics.getHeight() / 2 - 20);
+		Label secondName = new Label("Last name: ", skin);
+		secondName.setX(Gdx.graphics.getWidth() / 2 - firstName.getWidth());
+		secondName.setY(Gdx.graphics.getHeight() / 2 - firstName.getHeight()
+				* 0.2f);
 
-		// nameTable = new Table(skin);
-		// nameTable.setHeight(200);
-		// nameTable.setWidth(200);
-		// nameTable.add(secondNameTextField).expandX();
-		// nameTable.center();
-		mainTable.row();
+		secondNameTextField = new TextField("", skin);
+		secondNameTextField.setAlignment(1);
+		secondNameTextField.setMaxLength(12);
+		secondNameTextField.setX(Gdx.graphics.getWidth() / 2);
+		secondNameTextField.setY(Gdx.graphics.getHeight() / 2
+				- firstName.getHeight());
+
 		nextButton = new TextButton("Next", skin);
-		mainTable.add(nextButton).expand().bottom().right();
 
+		nextButton.setX(stage.getWidth() - nextButton.getWidth() - 16);
+		nextButton.setY(16);
 		defineNextButton(nextButton);
-		// mainTable.addActor(nameTable);
-		// mainTable.center();
 
-		System.out.println(stage.getWidth());
-		System.out.println(stage.getHeight());
-		System.out.println(mainTable.getWidth());
-		System.out.println(mainTable.getHeight());
-		stage.setDebugAll(true);
+		actorList.add(firstName);
+		actorList.add(firstNameTextField);
+		actorList.add(secondName);
+		actorList.add(secondNameTextField);
+		actorList.add(nextButton);
+
+		stage.addActor(firstName);
+		stage.addActor(firstNameTextField);
+		stage.addActor(secondName);
+		stage.addActor(secondNameTextField);
+		stage.addActor(nextButton);
+
 	}
 
 	public void makeStatsSetup() {
@@ -701,16 +710,27 @@ public class CharacterCreationState implements Screen {
 		mainTable = new Table(skin);
 		stage.addActor(mainTable);
 		mainTable.setFillParent(true);
-		minusStr = new TextButton("-", skin);
-		plusStr = new TextButton("+", skin);
-		minusWis = new TextButton("-", skin);
-		plusWis = new TextButton("+", skin);
-		minusInt = new TextButton("-", skin);
-		plusInt = new TextButton("+", skin);
-		minusAgi = new TextButton("-", skin);
-		plusAgi = new TextButton("+", skin);
-		minusVit = new TextButton("-", skin);
-		plusVit = new TextButton("+", skin);
+
+		Texture tempTexture = new Texture(
+				Gdx.files.internal("GUI Assets/minusArrow.png"));
+		TextureRegion tempRegion = new TextureRegion(tempTexture);
+		TextureRegionDrawable tempDraw = new TextureRegionDrawable(tempRegion);
+		minusStr = new Button(tempDraw);
+		minusWis = new Button(tempDraw);
+		minusInt = new Button(tempDraw);
+		minusAgi = new Button(tempDraw);
+		minusVit = new Button(tempDraw);
+
+		tempTexture = new Texture(
+				Gdx.files.internal("GUI Assets/plusArrow.png"));
+		tempRegion = new TextureRegion(tempTexture);
+		tempDraw = new TextureRegionDrawable(tempRegion);
+
+		plusStr = new Button(tempDraw);
+		plusWis = new Button(tempDraw);
+		plusInt = new Button(tempDraw);
+		plusAgi = new Button(tempDraw);
+		plusVit = new Button(tempDraw);
 
 		pointsToSpendText = new Label(String.valueOf(pointsToSpend), skin,
 				"default");
@@ -727,14 +747,14 @@ public class CharacterCreationState implements Screen {
 		agiText = new Label("Agility: ", skin, "default");
 		vitText = new Label("Vitality: ", skin, "default");
 
-		mainTable.add(pointsText);
-		mainTable.add(pointsToSpendText).uniform();
+		mainTable.add(pointsText).colspan(2).center();
+		mainTable.add(pointsToSpendText);
 		mainTable.row();
 
-		mainTable.add(strText).uniform();
-		mainTable.add(minusStr).uniform();
+		mainTable.add(strText);
+		mainTable.add(minusStr);
 		mainTable.add(str);
-		mainTable.add(plusStr).uniform();
+		mainTable.add(plusStr);
 		mainTable.row();
 
 		mainTable.add(wisText);
@@ -764,11 +784,13 @@ public class CharacterCreationState implements Screen {
 		assignStatArrowButtons();
 
 		nextButton = new TextButton("Next", skin);
-		mainTable.add(nextButton).expand().bottom().right();
+		stage.addActor(nextButton);
+		nextButton.setX(Gdx.graphics.getWidth() - nextButton.getWidth());
+		nextButton.setY(nextButton.getHeight() / 2);
 
 		defineNextButton(nextButton);
 
-		mainTable.setDebug(true);
+		// mainTable.setDebug(true);
 
 	}
 

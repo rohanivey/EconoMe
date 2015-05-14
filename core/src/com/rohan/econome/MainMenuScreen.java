@@ -17,7 +17,7 @@ public class MainMenuScreen implements Screen {
 	Jukebox jukebox;
 	Stage stage;
 	GameStateManager gsm;
-	Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+	Skin skin = new Skin(Gdx.files.internal("Character Creation/uiskin.json"));
 
 	TextButton playButton = new TextButton("Play", skin);
 	TextButton loadButton = new TextButton("Load", skin);
@@ -45,10 +45,11 @@ public class MainMenuScreen implements Screen {
 		buttonList.add(optionsButton);
 		buttonList.add(exitButton);
 
-		if (!buttonsPlaced) {
-			placeButtons();
-		}
+		setupMainMenuButtons();
 
+	}
+
+	public void setupMainMenuButtons() {
 		playButton.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -89,6 +90,9 @@ public class MainMenuScreen implements Screen {
 			}
 		});
 
+		if (!buttonsPlaced) {
+			placeButtons();
+		}
 	}
 
 	@Override
@@ -102,10 +106,10 @@ public class MainMenuScreen implements Screen {
 		int i = 0;
 
 		for (Button b : buttonList) {
-			b.setX(Gdx.graphics.getWidth() * 0.4f);
-			b.setY(Gdx.graphics.getHeight() * 0.6f - i * 32);
+			b.setX(Gdx.graphics.getWidth() * 0.5f - b.getWidth() / 2);
+			b.setY(Gdx.graphics.getHeight() * 0.65f - i * b.getHeight() * 1.2f);
 			b.setBounds(b.getX(), b.getY(), b.getWidth(), b.getHeight());
-			b.setDebug(true);
+			// b.setDebug(true);
 			i++;
 			System.out.println("X: " + b.getX() + " Y: " + b.getY()
 					+ " Width: " + b.getWidth() + " Height: " + b.getHeight());

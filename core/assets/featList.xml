@@ -39,4 +39,211 @@
 			</StatModify>
 		</Effects>
 	</Feat>
+	
+		
+	<Feat>
+		<ID>highestStr</ID>
+		<Requirements>
+			<MinStats>
+				<Strength>1</Strength>
+				<Wisdom>0</Wisdom>
+				<Intelligence>0</Intelligence>
+				<Agility>1</Agility>
+				<Vitality>0</Vitality>
+			</MinStats>
+			<MaxStats>
+				<Strength>3</Strength>
+				<Wisdom>9999</Wisdom>
+				<Intelligence>9999</Intelligence>
+				<Agility>2</Agility>
+				<Vitality>9999</Vitality>
+			</MaxStats>
+			<Feats>
+				<ID>None</ID>
+			</Feats>
+			<Items>
+				<ID>None</ID>
+			</Items>
+			<Quests>
+				<ID>None</ID>
+			</Quests>
+		</Requirements>
+		<Name>Super Strength Again!</Name>
+		<Description>Now with 100% more donk and 58% more honk!</Description>
+		<Texture>strong.png</Texture>
+		<Effects>
+			<StatModify>
+				<Strength> 3 </Strength>
+				<Wisdom> 0 </Wisdom>
+				<Intelligence> -1 </Intelligence>
+				<Agility> 0 </Agility>
+				<Vitality> 0 </Vitality>
+			</StatModify>
+		</Effects>
+	</Feat>
+	
+		
+	<Feat>
+		<ID>firstHonk</ID>
+		<Requirements>
+			<MinStats>
+				<Strength>1</Strength>
+				<Wisdom>0</Wisdom>
+				<Intelligence>0</Intelligence>
+				<Agility>1</Agility>
+				<Vitality>0</Vitality>
+			</MinStats>
+			<MaxStats>
+				<Strength>3</Strength>
+				<Wisdom>9999</Wisdom>
+				<Intelligence>9999</Intelligence>
+				<Agility>2</Agility>
+				<Vitality>9999</Vitality>
+			</MaxStats>
+			<Feats>
+				<ID>None</ID>
+			</Feats>
+			<Items>
+				<ID>None</ID>
+			</Items>
+			<Quests>
+				<ID>None</ID>
+			</Quests>
+		</Requirements>
+		<Name>Super Honk!</Name>
+		<Description>HOOOOOOOOOOOOOOOOOOOOOOONK!</Description>
+		<Texture>strong.png</Texture>
+		<Effects>
+			<StatModify>
+				<Strength> 3 </Strength>
+				<Wisdom> 0 </Wisdom>
+				<Intelligence> -1 </Intelligence>
+				<Agility> 0 </Agility>
+				<Vitality> 0 </Vitality>
+			</StatModify>
+		</Effects>
+	</Feat>
+	
+		<Feat>
+		<ID>secondHonk</ID>
+		<Requirements>
+			<MinStats>
+				<Strength>1</Strength>
+				<Wisdom>0</Wisdom>
+				<Intelligence>0</Intelligence>
+				<Agility>1</Agility>
+				<Vitality>0</Vitality>
+			</MinStats>
+			<MaxStats>
+				<Strength>3</Strength>
+				<Wisdom>9999</Wisdom>
+				<Intelligence>9999</Intelligence>
+				<Agility>2</Agility>
+				<Vitality>9999</Vitality>
+			</MaxStats>
+			<Feats>
+				<ID>None</ID>
+			</Feats>
+			<Items>
+				<ID>None</ID>
+			</Items>
+			<Quests>
+				<ID>None</ID>
+			</Quests>
+		</Requirements>
+		<Name>Super Duper Honk!</Name>
+		<Description>EVEN MORE HOOOOOOOOOOOOOOOOOOOOOOONK!</Description>
+		<Texture>strong.png</Texture>
+		<Effects>
+			<StatModify>
+				<Strength> 3 </Strength>
+				<Wisdom> 0 </Wisdom>
+				<Intelligence> -1 </Intelligence>
+				<Agility> 0 </Agility>
+				<Vitality> 0 </Vitality>
+			</StatModify>
+		</Effects>
+	</Feat>
+	
+		<Feat>
+		<ID>thirdHonk</ID>
+		<Requirements>
+			<MinStats>
+				<Strength>1</Strength>
+				<Wisdom>0</Wisdom>
+				<Intelligence>0</Intelligence>
+				<Agility>1</Agility>
+				<Vitality>0</Vitality>
+			</MinStats>
+			<MaxStats>
+				<Strength>3</Strength>
+				<Wisdom>9999</Wisdom>
+				<Intelligence>9999</Intelligence>
+				<Agility>2</Agility>
+				<Vitality>9999</Vitality>
+			</MaxStats>
+			<Feats>
+				<ID>None</ID>
+			</Feats>
+			<Items>
+				<ID>None</ID>
+			</Items>
+			<Quests>
+				<ID>None</ID>
+			</Quests>
+		</Requirements>
+		<Name>Such Honk!</Name>
+		<Description>MY GOD TOO MUCH HONK!?</Description>
+		<Texture>strong.png</Texture>
+		<Effects>
+			<StatModify>
+				<Strength> 3 </Strength>
+				<Wisdom> 0 </Wisdom>
+				<Intelligence> -1 </Intelligence>
+				<Agility> 0 </Agility>
+				<Vitality> 0 </Vitality>
+			</StatModify>
+		</Effects>
+	</Feat>
+	
+		<Feat>
+		<ID>fourthHonk</ID>
+		<Requirements>
+			<MinStats>
+				<Strength>1</Strength>
+				<Wisdom>0</Wisdom>
+				<Intelligence>0</Intelligence>
+				<Agility>1</Agility>
+				<Vitality>0</Vitality>
+			</MinStats>
+			<MaxStats>
+				<Strength>3</Strength>
+				<Wisdom>9999</Wisdom>
+				<Intelligence>9999</Intelligence>
+				<Agility>2</Agility>
+				<Vitality>9999</Vitality>
+			</MaxStats>
+			<Feats>
+				<ID>None</ID>
+			</Feats>
+			<Items>
+				<ID>None</ID>
+			</Items>
+			<Quests>
+				<ID>None</ID>
+			</Quests>
+		</Requirements>
+		<Name>I am become Honk!</Name>
+		<Description>HOOOOOOOOOOOOOOOOOOOOOOONK!</Description>
+		<Texture>strong.png</Texture>
+		<Effects>
+			<StatModify>
+				<Strength> 3 </Strength>
+				<Wisdom> 0 </Wisdom>
+				<Intelligence> -1 </Intelligence>
+				<Agility> 0 </Agility>
+				<Vitality> 0 </Vitality>
+			</StatModify>
+		</Effects>
+	</Feat>
 </Feats>

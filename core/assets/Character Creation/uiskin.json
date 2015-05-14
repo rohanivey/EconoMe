@@ -25,16 +25,17 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		font: font_essays1743_16pt,
 		fontColor: { a: 1 },
 		disabledFontColor: { a: 1, b: 0.8, g: 0.8, r: 0.8 },
-		up: default-round,
-		down: default-round-down
+		up: buttondefault,
+		down: buttondown
 	},
 	toggle: {
 		font: font_essays1743_16pt,
 		fontColor: { a: 1 },
-		downFontColor: { a: 1, r: 1 },
-		up: default-round,
-		down: default-round-down,
-		checked: default-round-down
+		downFontColor: { a: 1, b: 1, g: 1, r: 1 },
+		checkedFontColor: { a: 1, b: 1, g: 1, r: 1 },
+		up: buttondefault,
+		down: buttondown,
+		checked: buttonchecked
 	}
 },
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
@@ -48,8 +49,8 @@ com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 	default: { background: default-pane, knob: default-round-large }
 },
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-	default: { up: default-round, down: default-round-down },
-	toggle: { up: default-round, down: default-round-down, checked: default-round-down }
+	default: { up: buttondefault, down: buttondown },
+	toggle: { up: buttondefault, down: buttondown, checked: buttonchecked }
 },
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
@@ -67,16 +68,17 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: font_essays1743_16pt,
-		fontColor: { a: 1, b: 0.7, g: 0.7, r: 0.7 },
+		fontColor: { a: 1, b: 1, g: 1, r: 1 },
+		background: buttondown,
 		cursor: cursor,
 		selection: selection
 	}
 },
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 	default: {
-		background: default-rect,
-		hScroll: default-scroll,
-		hScrollKnob: default-round-large,
+		background: "paper background",
+		hScroll: horizontalscrollbar,
+		hScrollKnob: horizontalscrollknob,
 		vScroll: default-scroll,
 		vScrollKnob: default-round-large
 	}
@@ -116,8 +118,8 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 },
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
-		checkboxOn: check-on,
-		checkboxOff: check-off,
+		checkboxOn: checkon,
+		checkboxOff: checkoff,
 		font: font_essays1743_16pt,
 		fontColor: { a: 1, b: 1, g: 1, r: 1 }
 	}
@@ -127,7 +129,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
 },
 com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 	default-vertical: { background: default-slider, knob: default-slider-knob },
-	default-horizontal: { background: default-slider, knob: default-slider-knob }
+	default-horizontal: { background: horizontalscrollbar, knob: horizontalscrollknob }
 },
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {

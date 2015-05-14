@@ -1,19 +1,40 @@
 
 uiskin.png
-size: 2046,2047
+size: 2044,2047
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+buttonchecked
+  rotate: false
+  xy: 1602, 1985
+  size: 291, 62
+  orig: 291, 62
+  offset: 0, 0
+  index: -1
+buttondefault
+  rotate: false
+  xy: 1602, 1922
+  size: 291, 62
+  orig: 291, 62
+  offset: 0, 0
+  index: -1
+buttondown
+  rotate: false
+  xy: 1602, 1859
+  size: 291, 62
+  orig: 291, 62
+  offset: 0, 0
+  index: -1
 check-off
   rotate: false
-  xy: 1667, 1906
+  xy: 1959, 1984
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 textfield
   rotate: false
-  xy: 1667, 1906
+  xy: 1959, 1984
   size: 14, 14
   split: 3, 3, 3, 3
   orig: 14, 14
@@ -21,9 +42,23 @@ textfield
   index: -1
 check-on
   rotate: false
-  xy: 2004, 2003
+  xy: 1602, 1492
   size: 14, 14
   orig: 14, 14
+  offset: 0, 0
+  index: -1
+checkoff
+  rotate: false
+  xy: 2008, 2010
+  size: 34, 37
+  orig: 34, 37
+  offset: 0, 0
+  index: -1
+checkon
+  rotate: false
+  xy: 1700, 1620
+  size: 36, 33
+  orig: 36, 33
   offset: 0, 0
   index: -1
 cursor
@@ -36,7 +71,7 @@ cursor
   index: -1
 default
   rotate: false
-  xy: 1602, 1970
+  xy: 1602, 1781
   size: 254, 77
   orig: 254, 77
   offset: 0, 0
@@ -59,7 +94,7 @@ default-rect-pad
   index: -1
 default-pane-noborder
   rotate: false
-  xy: 1835, 1968
+  xy: 2043, 2046
   size: 1, 1
   split: 0, 0, 0, 0
   orig: 1, 1
@@ -83,7 +118,7 @@ default-rect-down
   index: -1
 default-round
   rotate: false
-  xy: 1602, 1443
+  xy: 1798, 1731
   size: 12, 20
   split: 5, 5, 5, 4
   pad: 4, 4, 1, 1
@@ -92,7 +127,7 @@ default-round
   index: -1
 default-round-down
   rotate: false
-  xy: 1651, 1884
+  xy: 1943, 1962
   size: 12, 20
   split: 5, 5, 5, 4
   orig: 12, 20
@@ -100,7 +135,7 @@ default-round-down
   index: -1
 default-round-large
   rotate: false
-  xy: 1857, 1978
+  xy: 1819, 1760
   size: 20, 20
   split: 5, 5, 5, 4
   orig: 20, 20
@@ -108,7 +143,7 @@ default-round-large
   index: -1
 default-scroll
   rotate: false
-  xy: 1814, 1949
+  xy: 1894, 1864
   size: 20, 20
   split: 2, 2, 2, 2
   orig: 20, 20
@@ -132,7 +167,7 @@ default-select-selection
   index: -1
 default-slider
   rotate: false
-  xy: 1814, 1940
+  xy: 2008, 2001
   size: 8, 8
   split: 2, 2, 2, 2
   orig: 8, 8
@@ -140,7 +175,7 @@ default-slider
   index: -1
 default-slider-knob
   rotate: false
-  xy: 1878, 1980
+  xy: 1700, 1601
   size: 9, 18
   orig: 9, 18
   offset: 0, 0
@@ -155,7 +190,7 @@ default-splitpane
   index: -1
 default-splitpane-vertical
   rotate: false
-  xy: 1857, 1972
+  xy: 1887, 1853
   size: 3, 5
   split: 0, 0, 0, 5
   orig: 3, 5
@@ -163,15 +198,29 @@ default-splitpane-vertical
   index: -1
 default-window
   rotate: false
-  xy: 2004, 2018
+  xy: 1749, 1673
   size: 27, 29
   split: 4, 3, 20, 3
   orig: 27, 29
   offset: 0, 0
   index: -1
+horizontalscrollbar
+  rotate: false
+  xy: 1602, 1752
+  size: 216, 28
+  orig: 216, 28
+  offset: 0, 0
+  index: -1
+horizontalscrollknob
+  rotate: false
+  xy: 1857, 1811
+  size: 29, 47
+  orig: 29, 47
+  offset: 0, 0
+  index: -1
 paint_brush
   rotate: false
-  xy: 1602, 1905
+  xy: 1894, 1983
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -185,140 +234,140 @@ paperbg
   index: -1
 selection
   rotate: false
-  xy: 1651, 1882
+  xy: 1737, 1652
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 tree-minus
   rotate: false
-  xy: 2032, 2033
+  xy: 1651, 1541
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 tree-plus
   rotate: false
-  xy: 29, 11
+  xy: 1857, 1796
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 white
   rotate: false
-  xy: 1664, 1903
+  xy: 1749, 1671
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 widgets/Button
   rotate: false
-  xy: 1857, 1999
+  xy: 1602, 1703
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/CheckBox
   rotate: false
-  xy: 1602, 1856
+  xy: 1894, 1934
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/ImageButton
   rotate: false
-  xy: 1667, 1921
+  xy: 1959, 1999
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/Label
   rotate: false
-  xy: 1906, 1999
+  xy: 1602, 1654
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/List
   rotate: false
-  xy: 1602, 1807
+  xy: 1651, 1703
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/ProgressBar
   rotate: false
-  xy: 1716, 1921
+  xy: 1894, 1885
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/ScrollPane
   rotate: false
-  xy: 1955, 1999
+  xy: 1602, 1605
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/SelectBox
   rotate: false
-  xy: 1602, 1758
+  xy: 1651, 1654
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/Slider
   rotate: false
-  xy: 1765, 1921
+  xy: 1700, 1703
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/SplitPane
   rotate: false
-  xy: 1602, 1709
+  xy: 1602, 1556
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/TextButton
   rotate: false
-  xy: 1602, 1660
+  xy: 1651, 1605
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/TextField
   rotate: false
-  xy: 1602, 1611
+  xy: 1700, 1654
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/Touchpad
   rotate: false
-  xy: 1602, 1562
+  xy: 1749, 1703
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/Tree
   rotate: false
-  xy: 1602, 1513
+  xy: 1602, 1507
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 widgets/Window
   rotate: false
-  xy: 1602, 1464
+  xy: 1651, 1556
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 
 uiskin2.png
-size: 757,1143
+size: 757,1656
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -329,9 +378,16 @@ font_essays1743_16pt
   orig: 512, 86
   offset: 0, 0
   index: -1
-paperbg3
+paper background
   rotate: false
   xy: 1, 88
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+paperbg3
+  rotate: false
+  xy: 1, 601
   size: 756, 1055
   orig: 756, 1055
   offset: 0, 0
