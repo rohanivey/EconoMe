@@ -29,7 +29,7 @@ public class Level implements Screen {
 	private String regionName;
 	protected ArrayList<Rectangle> colliders;
 	protected ArrayList<Item> itemsOnScreen;
-	protected ArrayList<Entity> critters;
+	protected ArrayList<ComponentEntity> critters;
 	protected ArrayList<Zone> zoneArray;
 
 	protected OrthographicCamera cam;
@@ -61,7 +61,7 @@ public class Level implements Screen {
 		// Gdx.input.setInputProcessor(stage);
 
 		level = new ArrayList<TiledMap>();
-		critters = new ArrayList<Entity>();
+		critters = new ArrayList<ComponentEntity>();
 		itemsOnScreen = new ArrayList<Item>();
 		zoneArray = new ArrayList<Zone>();
 		dh = new DialogueHandler();
@@ -71,11 +71,12 @@ public class Level implements Screen {
 
 		player = new Player(30, 120, this);
 
-		Chicken chicken = new Chicken("Chicken", 30, 120, this);
+		Chicken chicken = new Chicken(30, 120, this);
+		addEntity(chicken);
 
 	}
 
-	public void addEntity(Entity e) {
+	public void addEntity(ComponentEntity e) {
 		critters.add(e);
 	}
 
@@ -146,7 +147,7 @@ public class Level implements Screen {
 		sb.draw(player.getFrame(), player.getX()
 				- player.getFrame().getRegionWidth() / 2, player.getY());
 
-		for (Entity e : critters) {
+		for (ComponentEntity e : critters) {
 			sb.draw(e.getTexture(), e.getX(), e.getY());
 		}
 
@@ -160,7 +161,7 @@ public class Level implements Screen {
 	}
 
 	public void entityUpdate() {
-		for (Entity e : critters) {
+		for (ComponentEntity e : critters) {
 			e.update();
 		}
 	}
@@ -173,7 +174,7 @@ public class Level implements Screen {
 		return colliders;
 	}
 
-	public ArrayList<Entity> getCritters() {
+	public ArrayList<ComponentEntity> getCritters() {
 		return critters;
 	}
 

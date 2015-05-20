@@ -297,7 +297,7 @@ public class Player {
 		Rectangle tempCollision = new Rectangle();
 		Boolean canMove = true;
 
-		for (Entity e : level.getCritters()) {
+		for (ComponentEntity e : level.getCritters()) {
 			tempCollision = new Rectangle(this.getCollision().x + horVelocity,
 					this.getCollision().y, this.getCollision().width,
 					this.getCollision().height);
@@ -457,7 +457,7 @@ public class Player {
 		if (Gdx.input.isKeyPressed(Keys.W)) {
 			animationState = AnimationState.Up;
 			handleAnimation();
-			for (Entity e : level.getCritters()) {
+			for (ComponentEntity e : level.getCritters()) {
 				tempCollision = new Rectangle(this.getCollision().x,
 						this.getCollision().y + speed,
 						this.getCollision().width,
@@ -482,7 +482,7 @@ public class Player {
 		} else if (Gdx.input.isKeyPressed(Keys.S)) {
 			animationState = AnimationState.Down;
 			handleAnimation();
-			for (Entity e : level.getCritters()) {
+			for (ComponentEntity e : level.getCritters()) {
 				tempCollision = new Rectangle(this.getCollision().x,
 						this.getCollision().y - speed,
 						this.getCollision().width, this.getCollision().height);
@@ -505,7 +505,7 @@ public class Player {
 		} else if (Gdx.input.isKeyPressed(Keys.A)) {
 			animationState = AnimationState.Left;
 			handleAnimation();
-			for (Entity e : level.getCritters()) {
+			for (ComponentEntity e : level.getCritters()) {
 				tempCollision = new Rectangle(this.getCollision().x - speed,
 						this.getCollision().y, this.getCollision().width,
 						this.getCollision().height);
@@ -528,7 +528,7 @@ public class Player {
 		} else if (Gdx.input.isKeyPressed(Keys.D)) {
 			animationState = AnimationState.Right;
 			handleAnimation();
-			for (Entity e : level.getCritters()) {
+			for (ComponentEntity e : level.getCritters()) {
 				tempCollision = new Rectangle(this.getCollision().x + speed,
 						this.getCollision().y, this.getCollision().width,
 						this.getCollision().height);
@@ -829,7 +829,7 @@ public class Player {
 					// ms.getItems().size());
 				}
 
-				for (Entity e : level.getCritters()) {
+				for (ComponentEntity e : level.getCritters()) {
 					if (Intersector.overlaps(interactCircle, e.getCollision())) {
 						for (int i = 0; i < characterKnowledge.length; i++) {
 							if (characterKnowledge[i][0] == e.getName()) {

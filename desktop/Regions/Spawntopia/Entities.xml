@@ -58,6 +58,6 @@
 		<Mind> Simple </Mind>
 		<Soul> None </Soul>
 		<Behaviour>Passive</Behaviour>
-		<Movement>Floating</Movement>
+		<Movement>Ground</Movement>
 	</Chicken>
 </Entities>

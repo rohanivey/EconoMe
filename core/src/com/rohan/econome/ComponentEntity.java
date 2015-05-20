@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
@@ -110,24 +112,39 @@ public class ComponentEntity {
 		System.out.println("Behaviour: " + myBehaviour);
 
 		// Set up entity Movement
+
 		switch (entityXML.get("Movement")) {
 		case "Flying":
-			myMovement = new MovementComponentFlying();
+			myMovement = new MovementComponentFlying(new Texture(
+					Gdx.files.local("Regions/" + level.getRegionName()
+							+ "/Entities/" + entityID)));
 			break;
 		case "Floating":
-			myMovement = new MovementComponentFloating();
+			myMovement = new MovementComponentFloating(new Texture(
+					Gdx.files.local("Regions/" + level.getRegionName()
+							+ "/Entities/" + entityID + "_Floating")));
 			break;
 		case "Swimming":
-			myMovement = new MovementComponentSwimming();
+			myMovement = new MovementComponentSwimming(new Texture(
+					Gdx.files.local("Regions/" + level.getRegionName()
+							+ "/Entities/" + entityID)));
 			break;
 		case "Ground":
-			myMovement = new MovementComponentGround();
+			myMovement = new MovementComponentGround(new Texture(
+					Gdx.files.local("Regions/" + level.getRegionName()
+							+ "/Entities/" + entityID + "/" + entityID
+							+ "_Ground.png")));
+
 			break;
 		case "Spectral":
-			myMovement = new MovementComponentSpectral();
+			myMovement = new MovementComponentSpectral(new Texture(
+					Gdx.files.local("Regions/" + level.getRegionName()
+							+ "/Entities/" + entityID)));
 			break;
 		case "Underground":
-			myMovement = new MovementComponentUnderground();
+			myMovement = new MovementComponentUnderground(new Texture(
+					Gdx.files.local("Regions/" + level.getRegionName()
+							+ "/Entities/" + entityID)));
 			break;
 		}
 
@@ -146,6 +163,54 @@ public class ComponentEntity {
 
 	public Soul getSoul() {
 		return soul;
+	}
+
+	public void draw() {
+
+	}
+
+	public TextureRegion getTexture() {
+		// TODO Auto-generated method stub
+		return myMovement.getFrame();
+	}
+
+	public float getX() {
+		// TODO Auto-generated method stub
+		return 100;
+	}
+
+	public float getY() {
+		// TODO Auto-generated method stub
+		return 100;
+	}
+
+	public void update() {
+		myMovement.update();
+	}
+
+	public Rectangle getCollision() {
+		Rectangle tempR = new Rectangle(100, 100, 100, 100);
+		return tempR;
+	}
+
+	public void handleCollision(Player player) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public DialogueHandler getDialogueHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void interact() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
