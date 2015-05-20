@@ -19,10 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Level implements Screen {
 
-	public static String getRegionName() {
-		return null;
-	}
-
 	protected TiledMap map;
 	protected TiledMapTileLayer bg;
 	protected TiledMapTileLayer fg;
@@ -30,6 +26,7 @@ public class Level implements Screen {
 	protected TiledMapTileLayer oh;
 	protected TiledMapTileLayer zones;
 	protected OrthogonalTiledMapRenderer mapRenderer;
+	private String regionName;
 	protected ArrayList<Rectangle> colliders;
 	protected ArrayList<Item> itemsOnScreen;
 	protected ArrayList<Entity> critters;
@@ -68,10 +65,13 @@ public class Level implements Screen {
 		itemsOnScreen = new ArrayList<Item>();
 		zoneArray = new ArrayList<Zone>();
 		dh = new DialogueHandler();
+		regionName = "Spawntopia";
 
 		areaLoad(inputLevel);
 
 		player = new Player(30, 120, this);
+
+		Chicken chicken = new Chicken("Chicken", 30, 120, this);
 
 	}
 
@@ -86,6 +86,10 @@ public class Level implements Screen {
 
 		// mapRenderer.setView(cam);
 
+	}
+
+	public String getRegionName() {
+		return regionName;
 	}
 
 	public void cameraHandler() {

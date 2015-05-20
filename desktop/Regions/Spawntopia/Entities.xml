@@ -1,0 +1,63 @@
+<Entities>
+	<BlindBob>
+		<Body>
+			<Eyes>None</Eyes>
+			<Ears>Human</Ears>
+			<Nose>Human</Nose>
+			<Mouth>Human</Mouth>
+			<Strength> 3 </Strength>
+			<Agility> 1 </Agility>
+			<Vitality> 1 </Vitality>
+		</Body>
+		<Mind>
+			<Type>Complex</Type>
+			<Intelligence>2</Intelligence>
+		</Mind>
+		<Soul>Kind</Soul>
+		<Behaviour>Passive</Behaviour>
+		<Movement>Ground</Movement>
+	</BlindBob>
+	<Dog>
+		<Body>
+			<Eyes> Animal </Eyes>
+			<Ears> Animal </Ears>
+			<Nose> Animal </Nose>
+			<Mouth> Animal </Mouth>
+		</Body>
+		<Mind> Simple </Mind>
+		<Soul> None </Soul>
+		<Behaviour>Neutral</Behaviour>
+		<Movement>Ground</Movement>
+	</Dog>
+	<Blob>
+		<Body>
+			<Eyes> None </Eyes>
+			<Ears> None </Ears>
+			<Nose> Animal </Nose>
+			<Mouth> None </Mouth>
+		</Body>
+		<Mind> None </Mind>
+		<Soul> None </Soul>
+		<Behaviour>Neutral</Behaviour>
+		<Movement>Ground</Movement>
+	</Blob>
+	<Ghost>
+		<Body> None </Body>
+		<Mind> Simple </Mind>
+		<Soul> Sad </Soul>
+		<Behaviour>Aggressive</Behaviour>
+		<Movement>Spectral</Movement>
+	</Ghost>
+	<Chicken>
+		<Body>
+			<Eyes> Animal </Eyes>
+			<Ears> Animal </Ears>
+			<Nose> Animal </Nose>
+			<Mouth> Animal </Mouth>
+		</Body>
+		<Mind> Simple </Mind>
+		<Soul> None </Soul>
+		<Behaviour>Passive</Behaviour>
+		<Movement>Floating</Movement>
+	</Chicken>
+</Entities>
