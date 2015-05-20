@@ -3,6 +3,7 @@ package com.rohan.econome;
 public class Mind {
 
 	private ComponentEntity owner;
+	private Behaviour myBehaviour;
 	private int intelligence;
 	private int mood;
 

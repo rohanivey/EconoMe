@@ -74,7 +74,7 @@ public class ComponentEntity {
 
 		}
 		if (entityXML.get("Soul").equals("None")) {
-			// STARING INCREASES
+			// Probably put an eye out by now
 		} else {
 			soul = new Soul(entityXML.get("Soul"));
 		}

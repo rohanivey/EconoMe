@@ -65,8 +65,7 @@ public class CharacterCreationState implements Screen {
 	private Sprite hairSprite;
 	private TextureRegion[][] tempHairs;
 	private int hairChoice = 0;
-	private TextButton minusHair, plusHair, minusEyes, plusEyes, minusMouth,
-			plusMouth;
+	Button minusHair, plusHair, minusEyes, plusEyes, minusMouth, plusMouth;
 	private Image hairImage, eyeImage, mouthImage;
 
 	ArrayList<Actor> actorList;
@@ -470,7 +469,7 @@ public class CharacterCreationState implements Screen {
 		mainTable = new Table(skin);
 
 		nextButton = new TextButton("Next", skin);
-		nextButton.setX(Gdx.graphics.getWidth() - 64);
+		nextButton.setX(Gdx.graphics.getWidth() - nextButton.getWidth());
 		nextButton.setY(8);
 		stage.addActor(nextButton);
 
@@ -494,16 +493,24 @@ public class CharacterCreationState implements Screen {
 		tempHairs = TextureRegion.split(img, 32, 64);
 		hairSprite = new Sprite(tempHairs[1][0]);
 
-		minusHair = new TextButton("<", skin);
-		plusHair = new TextButton(">", skin);
-		hairImage = new Image(hairSprite);
+		Texture tempTexture = new Texture(
+				Gdx.files.internal("GUI Assets/minusArrow.png"));
+		TextureRegion tempRegion = new TextureRegion(tempTexture);
+		TextureRegionDrawable tempDraw = new TextureRegionDrawable(tempRegion);
+		minusHair = new Button(tempDraw);
+		minusMouth = new Button(tempDraw);
+		minusEyes = new Button(tempDraw);
 
-		minusEyes = new TextButton("<", skin);
-		plusEyes = new TextButton(">", skin);
+		tempTexture = new Texture(
+				Gdx.files.internal("GUI Assets/plusArrow.png"));
+		tempRegion = new TextureRegion(tempTexture);
+		tempDraw = new TextureRegionDrawable(tempRegion);
+		plusEyes = new Button(tempDraw);
+		plusHair = new Button(tempDraw);
+		plusMouth = new Button(tempDraw);
+
 		eyeImage = new Image(hairSprite);
-
-		minusMouth = new TextButton("<", skin);
-		plusMouth = new TextButton(">", skin);
+		hairImage = new Image(hairSprite);
 		mouthImage = new Image(hairSprite);
 
 		bodyGroup.addActor(eyeImage);
