@@ -4,18 +4,25 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 public class ComponentEntity {
 
 	XmlReader xml;
+	Sprite sprite;
 	Texture img;
 	String entityID;
 
-	Body body;
+	BodyComponent body;
 
 	Mind mind;
 
@@ -27,10 +34,34 @@ public class ComponentEntity {
 
 	InventoryManager myInventoryManager;
 
+	Body physicsBody;
+
 	ComponentEntity(String inputID, Level inputLevel) {
 		entityID = inputID;
 		level = inputLevel;
+
 		init();
+		setupPhysics();
+
+	}
+
+	public void setupPhysics() {
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.position.set(sprite.getX(), sprite.getY());
+		physicsBody = level.getWorld().createBody(bodyDef);
+
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(sprite.getWidth() / 2, sprite.getHeight() / 2);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = shape;
+		fixtureDef.density = 1f;
+
+		Fixture fixture = physicsBody.createFixture(fixtureDef);
+
+		shape.dispose();
+
 	}
 
 	public void init() {
@@ -45,6 +76,9 @@ public class ComponentEntity {
 					.println("ComponentEntity.init() didn't intialize properly");
 		}
 
+		sprite = new Sprite(myMovement.getFrame());
+		sprite.setPosition(100, 200);
+
 		myInventoryManager = new InventoryManager(this);
 
 	}
@@ -58,7 +92,7 @@ public class ComponentEntity {
 		System.out.println(entityXML);
 
 		if (entityXML.get("Body", "Exists") != "None") {
-			body = new Body(this);
+			body = new BodyComponent(this);
 			Element eBody = entityXML.getChildByName("Body");
 			Element eNose = eBody.getChildByName("Nose");
 			Element eEyes = eBody.getChildByName("Eyes");
@@ -153,7 +187,7 @@ public class ComponentEntity {
 		System.out.println("ComponentEntity.gatherData() is ending");
 	}
 
-	public Body getBody() {
+	public BodyComponent getBody() {
 		return body;
 	}
 
@@ -185,10 +219,13 @@ public class ComponentEntity {
 	}
 
 	public void update() {
+		sprite.setPosition(physicsBody.getPosition().x,
+				physicsBody.getPosition().y);
 		myMovement.update();
 	}
 
 	public Rectangle getCollision() {
+		// JANKY PATCHWORK JAZZ
 		Rectangle tempR = new Rectangle(100, 100, 100, 100);
 		return tempR;
 	}

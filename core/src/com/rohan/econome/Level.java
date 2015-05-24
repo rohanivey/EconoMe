@@ -15,6 +15,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Level implements Screen {
@@ -46,6 +48,8 @@ public class Level implements Screen {
 	private Jukebox jukebox;
 	private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+	private World world;
+
 	public Level(GameStateManager inputGSM, String inputLevel) {
 		gsm = inputGSM;
 		sb = gsm.getAM().getSB();
@@ -66,6 +70,7 @@ public class Level implements Screen {
 		zoneArray = new ArrayList<Zone>();
 		dh = new DialogueHandler();
 		regionName = "Spawntopia";
+		world = new World(new Vector2(0, -98f), true);
 
 		areaLoad(inputLevel);
 
@@ -78,6 +83,10 @@ public class Level implements Screen {
 
 	public void addEntity(ComponentEntity e) {
 		critters.add(e);
+	}
+
+	public World getWorld() {
+		return world;
 	}
 
 	public void areaLoad(String inputString) {
@@ -301,6 +310,8 @@ public class Level implements Screen {
 		player.update();
 		entityUpdate();
 		cameraHandler();
+
+		world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 	}
 
 	@Override

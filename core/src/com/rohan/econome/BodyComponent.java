@@ -1,6 +1,6 @@
 package com.rohan.econome;
 
-public class Body {
+public class BodyComponent {
 
 	private enum Hierarchy {
 		Living, Undead, Elemental
@@ -17,7 +17,7 @@ public class Body {
 
 	private ComponentEntity owner;
 
-	public Body(ComponentEntity inputEntity) {
+	public BodyComponent(ComponentEntity inputEntity) {
 		owner = inputEntity;
 		init();
 	}

@@ -48,6 +48,8 @@ public class Movement {
 				break;
 			}
 		}
+		stateTime += Gdx.graphics.getDeltaTime();
+		currentFrame = walkLeft.getKeyFrame(stateTime, true);
 	}
 
 	public void handleAnimation() {
